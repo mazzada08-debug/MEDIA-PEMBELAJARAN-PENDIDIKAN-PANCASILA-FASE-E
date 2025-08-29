@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Media Pembelajaran Pancasila - Penerapan Pancasila</title>
+  <style>
+    :root {
+      --primary: #007bff;
+      --primary-dark: #0056b3;
+      --secondary: #e74c3c;
+      --accent: #f39c12;
+      --light: #f0f4f8;
+      --dark: #333;
+      --success: #27ae60;
+      --warning: #e67e22;
+      --danger: #c0392b;
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #f0f4f8 0%, #d6e4f0 100%);
+      color: var(--dark);
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      padding: 20px;
+      line-height: 1.6;
+    }
+    
+    .container {
+      max-width: 800px;
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .container::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(90deg, #e74c3c 20%, #f39c12 20%, #f39c12 40%, #27ae60 40%, #27ae60 60%, #3498db 60%, #3498db 80%, #9b59b6 80%);
+    }
+    
+    h1 {
+      text-align: center;
+      color: var(--primary);
+      margin-bottom: 10px;
+      font-size: 2.2rem;
+    }
+    
+    h2 {
+      text-align: center;
+      color: var(--dark);
+      font-weight: 500;
+      margin-bottom: 25px;
+      font-size: 1.3rem;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #eee;
+    }
+    
+    h3 {
+      color: var(--primary);
+      margin-bottom: 15px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--light);
+    }
+    
+    .slide-indicators {
+      display: flex;
+      justify-content: center;
+      margin: 20px 0;
+    }
+    
+    .indicator {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background-color: #ccc;
+      margin: 0 5px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .indicator.active {
+      background-color: var(--primary);
+      transform: scale(1.2);
+    }
+    
+    .slide {
+      display: none;
+      margin-top: 15px;
+      animation: fadeIn 0.5s ease;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .slide.active {
+      display: block;
+    }
+    
+    ul {
+      padding-left: 20px;
+      margin: 15px 0;
+    }
+    
+    li {
+      margin-bottom: 10px;
+      padding-left: 5px;
+    }
+    
+    .sila-highlight {
+      font-weight: 600;
+      color: var(--primary-dark);
+    }
+    
+    .nav-buttons {
+      margin-top: 25px;
+      text-align: center;
+      display: flex;
+      justify-content: space-between;
+    }
+    
+    button {
+      background-color: var(--primary);
+      border: none;
+      color: white;
+      padding: 12px 22px;
+      margin: 5px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    button:hover {
+      background-color: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+    }
+    
+    button:active {
+      transform: translateY(0);
+    }
+    
+    button:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+    
+    .quiz {
+      margin-top: 20px;
+      padding: 15px;
+      background-color: #f9f9f9;
+      border-radius: 10px;
+      border-left: 4px solid var(--primary);
+    }
+    
+    .quiz-question {
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 1px dashed #ddd;
+    }
+    
+    .quiz label {
+      display: block;
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 5px;
+      transition: background-color 0.2s;
+      cursor: pointer;
+    }
+    
+    .quiz label:hover {
+      background-color: #edf2f7;
+    }
+    
+    .quiz input[type="radio"] {
+      margin-right: 10px;
+    }
+    
+    .result {
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 8px;
+      text-align: center;
+      font-weight: bold;
+    }
+    
+    .progress-container {
+      height: 8px;
+      background-color: #e9ecef;
+      border-radius: 4px;
+      margin: 20px 0;
+      overflow: hidden;
+    }
+    
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+      border-radius: 4px;
+      transition: width 0.4s ease;
+    }
+    
+    .pancasila-icon {
+      display: flex;
+      justify-content: center;
+      margin: 20px 0;
+    }
+    
+    .pancasila-icon div {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin: 0 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      font-size: 18px;
+    }
+    
+    .sila1 { background-color: #e74c3c; }
+    .sila2 { background-color: #f39c12; }
+    .sila3 { background-color: #27ae60; }
+    .sila4 { background-color: #3498db; }
+    .sila5 { background-color: #9b59b6; }
+    
+    @media (max-width: 600px) {
+      .container {
+        padding: 20px 15px;
+      }
+      
+      h1 {
+        font-size: 1.8rem;
+      }
+      
+      h2 {
+        font-size: 1.1rem;
+      }
+      
+      button {
+        padding: 10px 16px;
+        font-size: 14px;
+      }
+      
+      .nav-buttons {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Pendidikan Pancasila</h1>
+    <h2>Materi: Penerapan Pancasila dalam Kehidupan Berbangsa dan Bernegara</h2>
+    
+    <div class="pancasila-icon">
+      <div class="sila1">1</div>
+      <div class="sila2">2</div>
+      <div class="sila3">3</div>
+      <div class="sila4">4</div>
+      <div class="sila5">5</div>
+    </div>
+    
+    <div class="progress-container">
+      <div class="progress-bar" id="progressBar" style="width: 25%;"></div>
+    </div>
+    
+    <div class="slide-indicators">
+      <div class="indicator active" data-slide="1"></div>
+      <div class="indicator" data-slide="2"></div>
+      <div class="indicator" data-slide="3"></div>
+      <div class="indicator" data-slide="4"></div>
+    </div>
+
+    <!-- Slide 1 -->
+    <div class="slide active" id="slide1">
+      <h3>Pancasila sebagai Dasar Negara</h3>
+      <p>Pancasila adalah dasar negara Indonesia yang mengandung nilai-nilai luhur yang harus diterapkan dalam kehidupan berbangsa dan bernegara. Nilai-nilai ini tercermin dalam setiap sila Pancasila:</p>
+      <ul>
+        <li><span class="sila-highlight">Sila 1: Ketuhanan Yang Maha Esa</span> → Menghormati kebebasan beragama dan menjalankan ibadah sesuai kepercayaan masing-masing.</li>
+        <li><span class="sila-highlight">Sila 2: Kemanusiaan yang Adil dan Beradab</span> → Menghargai hak asasi manusia dan memperlakukan所有人 dengan adil.</li>
+        <li><span class="sila-highlight">Sila 3: Persatuan Indonesia</span> → Menjaga kesatuan dan persatuan bangsa dengan mengutamakan kepentingan bersama.</li>
+        <li><span class="sila-highlight">Sila 4: Kerakyatan yang Dipimpin oleh Hikmat Kebijaksanaan</span> → Menjalankan demokrasi dengan bijak dan bertanggung jawab.</li>
+        <li><span class="sila-highlight">Sila 5: Keadilan Sosial bagi Seluruh Rakyat Indonesia</span> → Menegakkan keadilan sosial dalam semua aspek kehidupan.</li>
+      </ul>
+    </div>
+
+    <!-- Slide 2 -->
+    <div class="slide" id="slide2">
+      <h3>Penerapan Pancasila dalam Kehidupan Berbangsa</h3>
+      <p>Contoh penerapan Pancasila dalam kehidupan sehari-hari dapat kita lakukan melalui:</p>
+      <ul>
+        <li>Menjalankan ibadah sesuai agama masing-masing dan menghormati pemeluk agama lain (Sila 1).</li>
+        <li>Menolong sesama tanpa memandang suku, agama, atau latar belakang (Sila 2).</li>
+        <li>Mengutamakan kepentingan bangsa di atas kepentingan pribadi atau golongan (Sila 3).</li>
+        <li>Berpartisipasi aktif dalam pemilihan umum dan musyawarah untuk mufakat (Sila 4).</li>
+        <li>Mendukung program sosial yang adil bagi masyarakat dan tidak melakukan korupsi (Sila 5).</li>
+      </ul>
+      <p>Penerapan nilai-nilai Pancasila ini akan menciptakan kehidupan berbangsa yang harmonis dan sejahtera.</p>
+    </div>
+
+    <!-- Slide 3 -->
+    <div class="slide" id="slide3">
+      <h3>Contoh Penerapan Pancasila dalam Kehidupan Bernegara</h3>
+      <p>Beberapa contoh penerapan Pancasila dalam tata pemerintahan dan bernegara:</p>
+      <ul>
+        <li>Konstitusi negara (UUD 1945) berlandaskan nilai-nilai Pancasila.</li>
+        <li>Pembuatan hukum yang adil dan tidak diskriminatif terhadap semua warga negara.</li>
+        <li>Pelaksanaan demokrasi dengan menghormati suara rakyat melalui pemilihan umum.</li>
+        <li>Penghormatan terhadap hak asasi manusia dalam setiap kebijakan pemerintah.</li>
+        <li>Pengembangan kesejahteraan sosial bagi seluruh rakyat Indonesia melalui program-program pemerintah.</li>
+        <li>Kebijakan luar negeri yang bebas aktif yang mencerminkan nilai-nilai Pancasila.</li>
+      </ul>
+    </div>
+
+    <!-- Slide 4 (Quiz) -->
+    <div class="slide" id="slide4">
+      <h3>Kuis: Penerapan Pancasila</h3>
+      <p>Pilih jawaban yang paling tepat untuk menguji pemahaman Anda:</p>
+      
+      <div class="quiz">
+        <div class="quiz-question">
+          <p>1. Contoh penerapan sila Ketuhanan Yang Maha Esa adalah...</p>
+          <label><input type="radio" name="q1" value="a" /> Menghormati kebebasan beragama</label>
+          <label><input type="radio" name="q1" value="b" /> Menghargai hak asasi manusia</label>
+          <label><input type="radio" name="q1" value="c" /> Menjaga persatuan Indonesia</label>
+        </div>
+        
+        <div class="quiz-question">
+          <p>2. Penerapan sila Persatuan Indonesia adalah...</p>
+          <label><input type="radio" name="q2" value="a" /> Mengutamakan kepentingan pribadi</label>
+          <label><input type="radio" name="q2" value="b" /> Menjaga kesatuan bangsa</label>
+          <label><input type="radio" name="q2" value="c" /> Berpartisipasi dalam pemilu</label>
+        </div>
+        
+        <div class="quiz-question">
+          <p>3. Salah satu contoh penerapan sila Keadilan Sosial adalah...</p>
+          <label><input type="radio" name="q3" value="a" /> Memilih pemimpin melalui voting</label>
+          <label><input type="radio" name="q3" value="b" /> Menghormati perbedaan agama</label>
+          <label><input type="radio" name="q3" value="c" /> Mendukung program bantuan untuk masyarakat kurang mampu</label>
+        </div>
+      </div>
+      
+      <button onclick="checkQuiz()" style="background-color: var(--success);">Kirim Jawaban</button>
+      <div id="result" class="result"></div>
+    </div>
+
+    <div class="nav-buttons">
+      <button id="prevBtn" onclick="prevSlide()" disabled>Sebelumnya</button>
+      <button id="nextBtn" onclick="nextSlide()">Selanjutnya</button>
+    </div>
+  </div>
+
+  <script>
+    let currentSlide = 1;
+    const totalSlides = 4;
+    
+    // Update progress bar
+    function updateProgress() {
+      const progress = (currentSlide / totalSlides) * 100;
+      document.getElementById('progressBar').style.width = `${progress}%`;
+    }
+    
+    // Update navigation buttons state
+    function updateButtons() {
+      document.getElementById('prevBtn').disabled = currentSlide === 1;
+      document.getElementById('nextBtn').disabled = currentSlide === totalSlides;
+      
+      if (currentSlide === totalSlides) {
+        document.getElementById('nextBtn').textContent = 'Selesai';
+      } else {
+        document.getElementById('nextBtn').textContent = 'Selanjutnya';
+      }
+    }
+    
+    function showSlide(n) {
+      for (let i = 1; i <= totalSlides; i++) {
+        document.getElementById('slide' + i).classList.remove('active');
+        document.querySelector(`.indicator[data-slide="${i}"]`).classList.remove('active');
+      }
+      
+      document.getElementById('slide' + n).classList.add('active');
+      document.querySelector(`.indicator[data-slide="${n}"]`).classList.add('active');
+      
+      currentSlide = n;
+      updateProgress();
+      updateButtons();
+    }
+    
+    function nextSlide() {
+      if (currentSlide < totalSlides) {
+        currentSlide++;
+        showSlide(currentSlide);
+        clearResult();
+      } else {
+        // Action when completed
+        alert('Selamat! Anda telah menyelesaikan materi pembelajaran Pancasila.');
+      }
+    }
+    
+    function prevSlide() {
+      if (currentSlide > 1) {
+        currentSlide--;
+        showSlide(currentSlide);
+        clearResult();
+      }
+    }
+    
+    function checkQuiz() {
+      let score = 0;
+      const totalQuestions = 3;
+
+      const q1 = document.querySelector('input[name="q1"]:checked');
+      const q2 = document.querySelector('input[name="q2"]:checked');
+      const q3 = document.querySelector('input[name="q3"]:checked');
+
+      if (!q1 || !q2 || !q3) {
+        alert('Silakan jawab semua pertanyaan.');
+        return;
+      }
+
+      if (q1.value === 'a') score++;
+      if (q2.value === 'b') score++;
+      if (q3.value === 'c') score++;
+
+      const result = document.getElementById('result');
+      if (score === totalQuestions) {
+        result.innerHTML = '🎉 Selamat! Semua jawaban Anda benar. Anda memahami penerapan Pancasila dengan baik.';
+        result.style.color = 'var(--success)';
+        result.style.backgroundColor = '#e8f5e9';
+      } else if (score >= 1) {
+        result.innerHTML = `Anda menjawab ${score} dari ${totalQuestions} pertanyaan dengan benar. Coba pelajari kembali materinya.`;
+        result.style.color = 'var(--warning)';
+        result.style.backgroundColor = '#fff3e0';
+      } else {
+        result.innerHTML = 'Yuk, pelajari lagi materi Pancasila untuk memahami penerapannya dengan baik.';
+        result.style.color = 'var(--danger)';
+        result.style.backgroundColor = '#ffebee';
+      }
+    }
+    
+    function clearResult() {
+      const result = document.getElementById('result');
+      result.textContent = '';
+      result.style.backgroundColor = 'transparent';
+      
+      // Clear radio buttons
+      const radios = document.querySelectorAll('input[type="radio"]');
+      radios.forEach(radio => radio.checked = false);
+    }
+    
+    // Add event listeners to indicators
+    document.querySelectorAll('.indicator').forEach(indicator => {
+      indicator.addEventListener('click', () => {
+        const slideNum = parseInt(indicator.getAttribute('data-slide'));
+        showSlide(slideNum);
+        clearResult();
+      });
+    });
+    
+    // Initialize
+    updateProgress();
+    updateButtons();
+  </script>
+</body>
+</html>
